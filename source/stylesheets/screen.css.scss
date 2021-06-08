@@ -74,8 +74,8 @@ html, body {
   // This is the logo at the top of the ToC
   .logo {
     display: block;
-    max-width: 100%;
-    margin-bottom: $logo-margin;
+    max-width: 60%;
+    margin: 20px
   }
 
   &>.search {
@@ -469,6 +469,7 @@ html, body {
     margin-bottom: 1.5em;
     background: $aside-notice-bg;
     line-height: 1.6;
+    color: $aside-text;
 
     &.warning {
       background-color: $aside-warning-bg;
