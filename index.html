@@ -338,7 +338,7 @@
 
 <p><code>Authorization: Bearer &lt;your_app_id&gt;:&lt;your_app_key&gt;</code></p>
 <h1 id='versioning'>Versioning</h1>
-<p>Every API request must specify the API version in its headers. Currently all requests should use version <code>v1</code>.</p>
+<p>Every API request must specify an API version in its headers. Currently all requests should use version <code>v1</code>.</p>
 
 <p><code>X-OAKRA-API-VERSION: v1</code></p>
 <h1 id='stock'>Stock</h1><h2 id='get-stock-record'>Get stock record</h2>
@@ -509,7 +509,7 @@
 
 <p>This differs from <a href="'#update-stock-record'"><code>/stock/stock-record/</code></a> in that it expects the <em>change</em> in the number of units at the location, as opposed to the actual number of units available at the location.</p>
 
-<p>In most cases, this endpoint is preferred for updating stock quantity, since it avoids the race conditions that are possible with <code>/stock/stock-record/</code>.</p>
+<p>In most cases, this endpoint is preferred for updating stock quantity, since it avoids race conditions that are possible with <code>/stock/stock-record/</code>.</p>
 <h3 id='endpoint-3'>Endpoint</h3>
 <p><code>POST http://oakra.co/api/v1/stock/stock-record/change/</code></p>
 <h3 id='json-body-2'>JSON Body</h3>
