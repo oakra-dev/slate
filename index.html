@@ -334,9 +334,9 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='authentication'>Authentication</h1>
-<p>All requests to the Oakra API are authenticated using HTTP bearer authentication. Include your App ID and App Key in the header of every API request using the Authorization header:</p>
+<p>All requests to the Oakra API are authenticated using HTTP bearer authentication. Include your App Key in the header of every API request using the Authorization header:</p>
 
-<p><code>Authorization: Bearer &lt;your_app_id&gt;:&lt;your_app_key&gt;</code></p>
+<p><code>Authorization: Bearer &lt;your_app_key&gt;</code></p>
 <h1 id='versioning'>Versioning</h1>
 <p>Every API request must specify an API version in its headers. Currently all requests should use version <code>v1</code>.</p>
 
@@ -346,7 +346,7 @@
 <p>Request</p>
 </blockquote>
 <div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET <span class="s2">"http://oakra.co/api/v1/stock/stock-record/?location_id=warehouse-1&amp;sku=shirt-blue-m1"</span> <span class="se">\</span>
-  <span class="nt">-H</span> <span class="s1">'Authorization: Bearer 102543:bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'</span>
+  <span class="nt">-H</span> <span class="s1">'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'</span>
   <span class="nt">-H</span> <span class="s1">'X-OAKRA-API-VERSION: v1'</span>
 
 </code></pre></div>
@@ -411,7 +411,7 @@
 <p>Request</p>
 </blockquote>
 <div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> PATCH <span class="s2">"http://oakra.co/api/v1/stock/stock-record/"</span> <span class="se">\</span>
-  <span class="nt">-H</span> <span class="s1">'Authorization: Bearer 102543:bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'</span>
+  <span class="nt">-H</span> <span class="s1">'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'</span>
   <span class="nt">-H</span> <span class="s1">'X-OAKRA-API-VERSION: v1'</span>
   <span class="nt">-d</span> <span class="s1">'{
       "location_id": "warehouse-1",
@@ -486,7 +486,7 @@
 <p>Request</p>
 </blockquote>
 <div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> POST <span class="s2">"http://oakra.co/api/v1/stock/stock-record/change/"</span> <span class="se">\</span>
-  <span class="nt">-H</span> <span class="s1">'Authorization: Bearer 102543:bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'</span>
+  <span class="nt">-H</span> <span class="s1">'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'</span>
   <span class="nt">-H</span> <span class="s1">'X-OAKRA-API-VERSION: v1'</span>
   <span class="nt">-d</span> <span class="s1">'{
       "location_id": "warehouse-1",
