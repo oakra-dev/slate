@@ -1,241 +1,203 @@
 ---
-title: API Reference
-
-language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
+title: Oakra API Reference
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
-
-includes:
-  - errors
-
-search: true
+  - <a href='https://app.oakra.com/login/'>Sign in to Oakra</a>
 
 code_clipboard: true
 ---
 
-# Introduction
-
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
-
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
-
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
-
 # Authentication
 
-> To authorize, use this code:
+All requests to the Oakra API are authenticated using HTTP bearer authentication. Include your App Key in the header of every API request using the Authorization header:
 
-```ruby
-require 'kittn'
+`Authorization: Bearer <your_app_key>`
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+# Versioning
 
-```python
-import kittn
+Every API request must specify an API version in its headers. Currently all requests should use version `v1`.
 
-api = kittn.authorize('meowmeowmeow')
-```
+`X-OAKRA-API-VERSION: v1`
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here" \
-  -H "Authorization: meowmeowmeow"
-```
 
-```javascript
-const kittn = require('kittn');
+# Stock
 
-let api = kittn.authorize('meowmeowmeow');
-```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+## Get stock records
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
+> Request
 
 ```shell
-curl "http://example.com/api/kittens" \
-  -H "Authorization: meowmeowmeow"
+curl -X GET "http://app.oakra.com/api/v1/stock/stock-records/?location_id=warehouse-1&sku=shirt-blue-m&&sku=shirt-green-m" \
+  -H 'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'
+  -H 'X-OAKRA-API-VERSION: v1'
+
 ```
 
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
+> Response
 
 ```json
 [
   {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
+    "id": 122,
+    "location_id": "warehouse-1",
+    "sku": "shirt-blue-m",
+    "quantity": 135
   },
   {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+    "id": 123,
+    "location_id": "warehouse-1",
+    "sku": "shirt-green-m",
+    "quantity": 142
   }
 ]
 ```
 
-This endpoint retrieves all kittens.
+Stock records represent a physical item at a specific location.
 
-### HTTP Request
+### Endpoint
 
-`GET http://example.com/api/kittens`
+`GET http://app.oakra.com/api/v1/stock/stock-records/`
 
 ### Query Parameters
 
-Parameter | Default | Description
+Parameter | Required | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+sku | Yes | The SKU of the inventory item. You can provide multiple values.
+location_id | No | The code name of the location where the inventory is located, i.e warehouse-1
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
 
-## Get a Specific Kitten
+### Response
 
-```ruby
-require 'kittn'
+Parameter | Type | Description
+--------- | ---- | -----------
+stock_records | array |
+→ id | int | The ID of the stock record
+→ location_id | string | The code name of the location where the inventory is located
+→ sku | string | The SKU of the inventory item
+→ quantity | int | The number of units in stock of the item
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
 
-```python
-import kittn
+## Update stock record
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+> Request
 
 ```shell
-curl "http://example.com/api/kittens/2" \
-  -H "Authorization: meowmeowmeow"
+curl -X PATCH "http://app.oakra.com/api/v1/stock/stock-record/" \
+  -H 'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'
+  -H 'X-OAKRA-API-VERSION: v1'
+  -d '{
+        "stock_records": [
+            {
+              "id": 123,
+              "quantity": 150
+            }
+          ]
+      }'
+
 ```
 
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
+> Response
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "stock_records": [
+    {
+      "id": 123,
+      "location_id": "warehouse-1",
+      "sku": "shirt-green-m",
+      "quantity": 150
+    }
+  ]
 }
 ```
 
-This endpoint retrieves a specific kitten.
+Use this endpoint to notify Oakra how many units of a stock record is now available.
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+### Endpoint
 
-### HTTP Request
+`POST http://app.oakra.com/api/v1/stock/stock-record/update/`
 
-`GET http://example.com/kittens/<ID>`
+### JSON Body
 
-### URL Parameters
+Parameter | Type | Required | Description
+--------- | ---- | -------- | -----------
+stock_records | array | Yes |
+→ id | int | Yes | The id of stock record. Lookup using the `stock/stock-records/` endpoint
+→ quantity | int | Yes | The number of units of the item currently available at the specified location
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+### Response
 
-## Delete a Specific Kitten
 
-```ruby
-require 'kittn'
+Parameter | Type | Description
+--------- | ---- | -----------
+stock_records | array |
+→ id | int | The ID of the stock record
+→ location_id | string | The code name of the location where the inventory is located
+→ sku | string | The SKU of the inventory item
+→ quantity | int | The number of units in stock of the item
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
 
-```python
-import kittn
+## Change in stock
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
+> Request
 
 ```shell
-curl "http://example.com/api/kittens/2" \
-  -X DELETE \
-  -H "Authorization: meowmeowmeow"
+curl -X POST "http://app.oakra.com/api/v1/stock/stock-record/change/" \
+  -H 'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'
+  -H 'X-OAKRA-API-VERSION: v1'
+  -d '{
+        "stock_records": [
+          {
+            "id": 123,
+            "quanity_change": 20
+          }
+        ]
+      }'
+
 ```
 
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
+> Response
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+  "stock_records": [
+    {
+      "id": 123,
+      "location_id": "warehouse-1",
+      "sku": "shirt-green-m",
+      "quantity": 170
+    }
+  ]
 }
 ```
 
-This endpoint deletes a specific kitten.
+Use this endpoint to notify Oakra that the number of units of an inventory item has changed.
 
-### HTTP Request
+This differs from [`/stock/stock-record/update/`]('#update-stock-record') in that it expects the *change* in the number of units at the location, as opposed to the actual number of units available at the location.
 
-`DELETE http://example.com/kittens/<ID>`
+In most cases, this endpoint is preferred for updating stock quantity, since it avoids race conditions that are possible with `/stock/stock-record/`.
 
-### URL Parameters
+### Endpoint
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+`POST http://app.oakra.com/api/v1/stock/stock-records/change/`
 
+### JSON Body
+
+Parameter | Type | Required | Description
+--------- | ---- | -------- | -----------
+stock_records | array | Yes |
+→ id | int | Yes | The id of stock record. Lookup using the `stock/stock-records/` endpoint
+→ quantity_change | int | Yes | The number of units that have been added or deducted from stock of the item. Units added should be represented by a positive integer; units deducted should be represented by a negative integer.
+
+
+### Response
+
+
+Parameter | Type | Description
+--------- | ---- | -----------
+stock_records | array |
+→ id | int | The ID of the stock record
+→ location_id | string | The code name of the location where the inventory is located
+→ sku | string | The SKU of the inventory item
+→ quantity | int | The number of units in stock of the item

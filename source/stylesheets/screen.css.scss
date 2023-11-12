@@ -59,8 +59,8 @@ html, body {
   bottom: 0;
   width: $nav-width;
   background-color: $nav-bg;
-  font-size: 13px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 500;
 
   // language selector for mobile devices
   .lang-selector {
@@ -71,11 +71,15 @@ html, body {
     }
   }
 
-  // This is the logo at the top of the ToC
+  .logo-cont {
+    padding: 25px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 25px;
+  }
+
   .logo {
     display: block;
     max-width: 60%;
-    margin: 20px
   }
 
   &>.search {
@@ -87,8 +91,8 @@ html, body {
       border-color: $search-box-border-color;
       padding: 6px 0 6px 20px;
       box-sizing: border-box;
-      margin: $nav-v-padding $nav-padding;
-      width: $nav-width - ($nav-padding*2);
+      margin: $nav-v-padding $nav-padding-horizontal;
+      width: $nav-width - ($nav-padding-horizontal*2);
       outline: none;
       color: $nav-text;
       border-radius: 0; /* ios has a default border radius */
@@ -97,7 +101,7 @@ html, body {
     &:before {
       position: absolute;
       top: 17px;
-      left: $nav-padding;
+      left: $nav-padding-horizontal;
       color: $nav-text;
       @extend %icon-search;
     }
@@ -119,7 +123,7 @@ html, body {
     }
 
     li {
-      margin: 1em $nav-padding;
+      margin: 1em $nav-padding-horizontal;
       line-height: 1;
     }
 
@@ -170,14 +174,14 @@ html, body {
   }
 
   .toc-h2 {
-    padding-left: $nav-padding + $nav-indent;
-    font-size: 12px;
+    padding-left: $nav-padding-horizontal + $nav-indent;
+    font-size: 14px;
   }
 
   .toc-footer {
     padding: 1em 0;
     margin-top: 1em;
-    border-top: 1px dashed $nav-footer-border-color;
+    border-top: 1px solid $nav-footer-border-color;
 
     li,a {
       color: $nav-text;
@@ -197,7 +201,7 @@ html, body {
 }
 
 .toc-link, .toc-footer li {
-  padding: 0 $nav-padding 0 $nav-padding;
+  padding: $nav-padding-vertical $nav-padding-horizontal;
   display: block;
   overflow-x: hidden;
   white-space: nowrap;
@@ -281,7 +285,6 @@ html, body {
   display: flex;
   background-color: $lang-select-bg;
   width: 100%;
-  font-weight: bold;
   overflow-x: auto;
   a {
     display: inline;
@@ -355,6 +358,7 @@ html, body {
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     background-color: #fdfdfd;
+    color: $h1-color;
   }
 
   h1:first-child, div:first-child + h1 {
