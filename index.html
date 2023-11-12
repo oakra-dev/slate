@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Oakra API Reference</title>
 
-    <link href="images/favicon-dba46676.png" rel="icon" type="image/png" />
+    <link href="images/favicon.png" rel="icon" type="image/png" />
 
     <style media="screen">
       .highlight table td { padding: 5px; }
@@ -315,7 +315,7 @@
             <a href="#stock" class="toc-h1 toc-link" data-title="Stock">Stock</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-stock-record" class="toc-h2 toc-link" data-title="Get stock record">Get stock record</a>
+                    <a href="#get-stock-records" class="toc-h2 toc-link" data-title="Get stock records">Get stock records</a>
                   </li>
                   <li>
                     <a href="#update-stock-record" class="toc-h2 toc-link" data-title="Update stock record">Update stock record</a>
@@ -327,7 +327,7 @@
           </li>
       </ul>
         <ul class="toc-footer">
-            <li><a href='https://oakra.co/login/'>Sign in to Oakra</a></li>
+            <li><a href='https://app.oakra.com/login/'>Sign in to Oakra</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
@@ -341,11 +341,11 @@
 <p>Every API request must specify an API version in its headers. Currently all requests should use version <code>v1</code>.</p>
 
 <p><code>X-OAKRA-API-VERSION: v1</code></p>
-<h1 id='stock'>Stock</h1><h2 id='get-stock-record'>Get stock record</h2>
+<h1 id='stock'>Stock</h1><h2 id='get-stock-records'>Get stock records</h2>
 <blockquote>
 <p>Request</p>
 </blockquote>
-<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET <span class="s2">"http://oakra.co/api/v1/stock/stock-record/?location_id=warehouse-1&amp;sku=shirt-blue-m1"</span> <span class="se">\</span>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> GET <span class="s2">"http://app.oakra.com/api/v1/stock/stock-records/?location_id=warehouse-1&amp;sku=shirt-blue-m&amp;&amp;sku=shirt-green-m"</span> <span class="se">\</span>
   <span class="nt">-H</span> <span class="s1">'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'</span>
   <span class="nt">-H</span> <span class="s1">'X-OAKRA-API-VERSION: v1'</span>
 
@@ -353,16 +353,24 @@
 <blockquote>
 <p>Response</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warehouse-1"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"sku"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shirt-blue-m1"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">142</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"quantity_allocated"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
-</span><span class="p">}</span><span class="w">
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">122</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warehouse-1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"sku"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shirt-blue-m"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">135</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warehouse-1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"sku"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shirt-green-m"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">142</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
 </span></code></pre></div>
 <p>Stock records represent a physical item at a specific location.</p>
 <h3 id='endpoint'>Endpoint</h3>
-<p><code>GET http://oakra.co/api/v1/stock/stock-record/</code></p>
+<p><code>GET http://app.oakra.com/api/v1/stock/stock-records/</code></p>
 <h3 id='query-parameters'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -372,87 +380,108 @@
 </tr>
 </thead><tbody>
 <tr>
-<td>location_id</td>
-<td>Yes</td>
-<td>The code name of the location where the inventory is located, i.e warehouse-1</td>
-</tr>
-<tr>
 <td>sku</td>
 <td>Yes</td>
-<td>The SKU of the inventory item</td>
+<td>The SKU of the inventory item. You can provide multiple values.</td>
+</tr>
+<tr>
+<td>location_id</td>
+<td>No</td>
+<td>The code name of the location where the inventory is located, i.e warehouse-1</td>
 </tr>
 </tbody></table>
 <h3 id='response'>Response</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>location_id</td>
+<td>stock_records</td>
+<td>array</td>
+<td></td>
+</tr>
+<tr>
+<td>→ id</td>
+<td>int</td>
+<td>The ID of the stock record</td>
+</tr>
+<tr>
+<td>→ location_id</td>
+<td>string</td>
 <td>The code name of the location where the inventory is located</td>
 </tr>
 <tr>
-<td>sku</td>
+<td>→ sku</td>
+<td>string</td>
 <td>The SKU of the inventory item</td>
 </tr>
 <tr>
-<td>quantity</td>
+<td>→ quantity</td>
+<td>int</td>
 <td>The number of units in stock of the item</td>
-</tr>
-<tr>
-<td>quantity_in_allocation</td>
-<td>The number of units of the item that have been reserved, for instance after receiving an order but before the order has shipped</td>
 </tr>
 </tbody></table>
 <h2 id='update-stock-record'>Update stock record</h2>
 <blockquote>
 <p>Request</p>
 </blockquote>
-<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> PATCH <span class="s2">"http://oakra.co/api/v1/stock/stock-record/"</span> <span class="se">\</span>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> PATCH <span class="s2">"http://app.oakra.com/api/v1/stock/stock-record/"</span> <span class="se">\</span>
   <span class="nt">-H</span> <span class="s1">'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'</span>
   <span class="nt">-H</span> <span class="s1">'X-OAKRA-API-VERSION: v1'</span>
   <span class="nt">-d</span> <span class="s1">'{
-      "location_id": "warehouse-1",
-      "sku": "shirt-blue-m1",
-      "quantity": 150
-  }'</span>
+        "stock_records": [
+            {
+              "id": 123,
+              "quantity": 150
+            }
+          ]
+      }'</span>
 
 </code></pre></div>
 <blockquote>
 <p>Response</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warehouse-1"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"sku"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shirt-blue-m1"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"quantity_allocated"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+  </span><span class="nl">"stock_records"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warehouse-1"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"sku"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shirt-green-m"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>Use this endpoint to notify Oakra that the number of units of an inventory item has changed.</p>
+<p>Use this endpoint to notify Oakra how many units of a stock record is now available.</p>
 <h3 id='endpoint-2'>Endpoint</h3>
-<p><code>PATCH http://oakra.co/api/v1/stock/stock-record/</code></p>
+<p><code>POST http://app.oakra.com/api/v1/stock/stock-record/update/</code></p>
 <h3 id='json-body'>JSON Body</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Type</th>
 <th>Required</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>location_id</td>
+<td>stock_records</td>
+<td>array</td>
 <td>Yes</td>
-<td>The code name of the location where the inventory is located, i.e warehouse-1</td>
+<td></td>
 </tr>
 <tr>
-<td>sku</td>
+<td>→ id</td>
+<td>int</td>
 <td>Yes</td>
-<td>The SKU of the inventory item</td>
+<td>The id of stock record. Lookup using the <code>stock/stock-records/</code> endpoint</td>
 </tr>
 <tr>
-<td>quantity</td>
+<td>→ quantity</td>
+<td>int</td>
 <td>Yes</td>
 <td>The number of units of the item currently available at the specified location</td>
 </tr>
@@ -461,103 +490,134 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>location_id</td>
+<td>stock_records</td>
+<td>array</td>
+<td></td>
+</tr>
+<tr>
+<td>→ id</td>
+<td>int</td>
+<td>The ID of the stock record</td>
+</tr>
+<tr>
+<td>→ location_id</td>
+<td>string</td>
 <td>The code name of the location where the inventory is located</td>
 </tr>
 <tr>
-<td>sku</td>
+<td>→ sku</td>
+<td>string</td>
 <td>The SKU of the inventory item</td>
 </tr>
 <tr>
-<td>quantity</td>
-<td>The number of units of the item currently available at the specified location</td>
-</tr>
-<tr>
-<td>quantity_in_allocation</td>
-<td>The number of units of the item that have been reserved, for instance after receiving an order but before the order has shipped</td>
+<td>→ quantity</td>
+<td>int</td>
+<td>The number of units in stock of the item</td>
 </tr>
 </tbody></table>
 <h2 id='change-in-stock'>Change in stock</h2>
 <blockquote>
 <p>Request</p>
 </blockquote>
-<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> POST <span class="s2">"http://oakra.co/api/v1/stock/stock-record/change/"</span> <span class="se">\</span>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> POST <span class="s2">"http://app.oakra.com/api/v1/stock/stock-record/change/"</span> <span class="se">\</span>
   <span class="nt">-H</span> <span class="s1">'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'</span>
   <span class="nt">-H</span> <span class="s1">'X-OAKRA-API-VERSION: v1'</span>
   <span class="nt">-d</span> <span class="s1">'{
-      "location_id": "warehouse-1",
-      "sku": "shirt-blue-m1",
-      "change_in_stock": 100
-  }'</span>
+        "stock_records": [
+          {
+            "id": 123,
+            "quanity_change": 20
+          }
+        ]
+      }'</span>
 
 </code></pre></div>
 <blockquote>
 <p>Response</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warehouse-1"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"sku"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shirt-blue-m1"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">242</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"quantity_allocated"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+  </span><span class="nl">"stock_records"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warehouse-1"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"sku"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shirt-green-m"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Use this endpoint to notify Oakra that the number of units of an inventory item has changed.</p>
 
-<p>This differs from <a href="'#update-stock-record'"><code>/stock/stock-record/</code></a> in that it expects the <em>change</em> in the number of units at the location, as opposed to the actual number of units available at the location.</p>
+<p>This differs from <a href="'#update-stock-record'"><code>/stock/stock-record/update/</code></a> in that it expects the <em>change</em> in the number of units at the location, as opposed to the actual number of units available at the location.</p>
 
 <p>In most cases, this endpoint is preferred for updating stock quantity, since it avoids race conditions that are possible with <code>/stock/stock-record/</code>.</p>
 <h3 id='endpoint-3'>Endpoint</h3>
-<p><code>POST http://oakra.co/api/v1/stock/stock-record/change/</code></p>
+<p><code>POST http://app.oakra.com/api/v1/stock/stock-records/change/</code></p>
 <h3 id='json-body-2'>JSON Body</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Type</th>
 <th>Required</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>location_id</td>
+<td>stock_records</td>
+<td>array</td>
 <td>Yes</td>
-<td>The code name of the location where the inventory is located, i.e warehouse-1</td>
+<td></td>
 </tr>
 <tr>
-<td>sku</td>
+<td>→ id</td>
+<td>int</td>
 <td>Yes</td>
-<td>The SKU of the inventory item</td>
+<td>The id of stock record. Lookup using the <code>stock/stock-records/</code> endpoint</td>
 </tr>
 <tr>
-<td>change_in_stock</td>
+<td>→ quantity_change</td>
+<td>int</td>
 <td>Yes</td>
-<td>The number of units that have been added or deducted from stock of the item. Units added should be represented by a positive integer; units deducted should be represented by a negative integer</td>
+<td>The number of units that have been added or deducted from stock of the item. Units added should be represented by a positive integer; units deducted should be represented by a negative integer.</td>
 </tr>
 </tbody></table>
 <h3 id='response-3'>Response</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>location_id</td>
+<td>stock_records</td>
+<td>array</td>
+<td></td>
+</tr>
+<tr>
+<td>→ id</td>
+<td>int</td>
+<td>The ID of the stock record</td>
+</tr>
+<tr>
+<td>→ location_id</td>
+<td>string</td>
 <td>The code name of the location where the inventory is located</td>
 </tr>
 <tr>
-<td>sku</td>
+<td>→ sku</td>
+<td>string</td>
 <td>The SKU of the inventory item</td>
 </tr>
 <tr>
-<td>quantity</td>
-<td>The number of units in stock of the item after the change in stock has been taken into account</td>
-</tr>
-<tr>
-<td>quantity_in_allocation</td>
-<td>The number of units of the item that have been reserved, for instance after receiving an order but before the order has shipped</td>
+<td>→ quantity</td>
+<td>int</td>
+<td>The number of units in stock of the item</td>
 </tr>
 </tbody></table>
 
