@@ -28,7 +28,7 @@ Every API request must specify an API version in its headers. Currently all requ
 > Request
 
 ```shell
-curl -X GET "http://app.oakra.com/api/v1/stock/stock-records/?location_id=warehouse-1&sku=shirt-blue-m&&sku=shirt-green-m" \
+curl -X GET "https://app.oakra.com/api/v1/stock/stock-records/?location_id=warehouse-1&sku=shirt-blue-m&&sku=shirt-green-m" \
   -H 'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'
   -H 'X-OAKRA-API-VERSION: v1'
 
@@ -57,7 +57,7 @@ Stock records represent a physical item at a specific location.
 
 ### Endpoint
 
-`GET http://app.oakra.com/api/v1/stock/stock-records/`
+`GET https://app.oakra.com/api/v1/stock/stock-records/`
 
 ### Query Parameters
 
@@ -83,7 +83,7 @@ stock_records | array |
 > Request
 
 ```shell
-curl -X PATCH "http://app.oakra.com/api/v1/stock/stock-record/" \
+curl -X POST "https://app.oakra.com/api/v1/stock/stock-records/update/" \
   -H 'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'
   -H 'X-OAKRA-API-VERSION: v1'
   -d '{
@@ -116,7 +116,7 @@ Use this endpoint to notify Oakra how many units of a stock record is now availa
 
 ### Endpoint
 
-`POST http://app.oakra.com/api/v1/stock/stock-record/update/`
+`POST https://app.oakra.com/api/v1/stock/stock-records/update/`
 
 ### JSON Body
 
@@ -143,14 +143,14 @@ stock_records | array |
 > Request
 
 ```shell
-curl -X POST "http://app.oakra.com/api/v1/stock/stock-record/change/" \
+curl -X POST "https://app.oakra.com/api/v1/stock/stock-records/change/" \
   -H 'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'
   -H 'X-OAKRA-API-VERSION: v1'
   -d '{
         "stock_records": [
           {
             "id": 123,
-            "quanity_change": 20
+            "quantity_change": 20
           }
         ]
       }'
@@ -174,13 +174,13 @@ curl -X POST "http://app.oakra.com/api/v1/stock/stock-record/change/" \
 
 Use this endpoint to notify Oakra that the number of units of an inventory item has changed.
 
-This differs from [`/stock/stock-record/update/`]('#update-stock-record') in that it expects the *change* in the number of units at the location, as opposed to the actual number of units available at the location.
+This differs from [`/stock/stock-records/update/`]('#update-stock-record') in that it expects the *change* in the number of units at the location, as opposed to the actual number of units available at the location.
 
-In most cases, this endpoint is preferred for updating stock quantity, since it avoids race conditions that are possible with `/stock/stock-record/`.
+In most cases, this endpoint is preferred for updating stock quantity, since it avoids race conditions that are possible with `/stock/stock-records/`.
 
 ### Endpoint
 
-`POST http://app.oakra.com/api/v1/stock/stock-records/change/`
+`POST https://app.oakra.com/api/v1/stock/stock-records/change/`
 
 ### JSON Body
 
@@ -201,3 +201,94 @@ stock_records | array |
 → location_id | string | The code name of the location where the inventory is located
 → sku | string | The SKU of the inventory item
 → quantity | int | The number of units in stock of the item
+
+# Shipping
+
+## Initiate shipping
+
+> Request
+
+```shell
+curl -X POST "https://app.oakra.com/api/v1/sales/shipping/init/" \
+  -H 'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'
+  -H 'X-OAKRA-API-VERSION: v1'
+  -d '{
+        "sale_ids": [
+          "100001234",
+          "100001235",
+          "100001236",
+        ]
+      }'
+```
+
+> Response
+
+```json
+{
+  "fulfillments": [
+    {
+      "id": 4234235338,
+      "sale": {
+        "id": 548928346,
+        "shop": {
+          "id": 42433,
+          "channel": "TikTok",
+          "shop_name": "Ripple Shop"
+        },
+        "sale_id": "100001234",
+        "date_created": "2024-01-03T11:22:02",
+        "status": "in_fulfillment"
+      },
+      "location": {
+        "name": "Warehouse 1",
+        "location_id": "warehouse-1"
+      },
+      "fulfillment_id": "3AXJD4356DPP",
+      "status": "waiting_for_picking",
+      "shipping_provider": {
+        "name": "Kerry TH",
+        "shipping_provider_id": "kerry_th"
+      },
+      "tracking_number": "3000123888423988999",
+      "date_created": "2024-01-03T11:22:02",
+      "is_bulky": false
+    }
+  ]
+}
+```
+
+
+Inform Oakra about orders that are beginning the pick/pack process. For marketplace orders, Oakra will inform associated platforms that the order is "ready to ship". Shipping labels will only be available after submitting orders to this endpoint.
+
+Only sales with status "Pending" can be submitted. After a successful response, sales will have status "In Fulfillment".
+
+### Endpoint
+
+`POST https://app.oakra.com/api/v1/fulfilllment/shipping/init/`
+
+
+### JSON Body
+
+Parameter | Type | Required | Description
+--------- | ---- | -------- | -----------
+sale_ids | array | Yes | An array of sale ids. For marketplace orders these are marketplace order IDs.
+
+
+### Response
+
+An array of fulfillments
+
+Parameter | Type | Description
+--------- | ---- | -----------
+fulfillments | array |
+→ id | int | The ID of the fulfillment
+→ sale | object | The sale associated with the fulfillment
+→ location | object | The location from which the fulfillment originates
+→ fulfillment_id | string | An additional ID, such as for a channel package ID
+→ status | string | The status of the fulfillment
+→ shipping_provider | object | The shipping provider for the fulfillment
+→ tracking_number | string | The tracking number from the shipping provider
+→ date_created | string | The date and time the fulfillment was created
+→ is_bulky | boolean | If the fulfillment contains large items
+
+
