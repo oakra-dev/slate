@@ -325,6 +325,14 @@
                   </li>
               </ul>
           </li>
+          <li>
+            <a href="#shipping" class="toc-h1 toc-link" data-title="Shipping">Shipping</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#initiate-shipping" class="toc-h2 toc-link" data-title="Initiate shipping">Initiate shipping</a>
+                  </li>
+              </ul>
+          </li>
       </ul>
         <ul class="toc-footer">
             <li><a href='https://app.oakra.com/login/'>Sign in to Oakra</a></li>
@@ -618,6 +626,138 @@
 <td>→ quantity</td>
 <td>int</td>
 <td>The number of units in stock of the item</td>
+</tr>
+</tbody></table>
+<h1 id='shipping'>Shipping</h1><h2 id='initiate-shipping'>Initiate shipping</h2>
+<blockquote>
+<p>Request</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> POST <span class="s2">"https://app.oakra.com/api/v1/sales/shipping/init/"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s1">'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'</span>
+  <span class="nt">-H</span> <span class="s1">'X-OAKRA-API-VERSION: v1'</span>
+  <span class="nt">-d</span> <span class="s1">'{
+        "sale_ids": [
+          "100001234",
+          "100001235",
+          "100001236",
+        ]
+      }'</span>
+</code></pre></div>
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"fulfillments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">4234235338</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"sale"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">548928346</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"shop"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42433</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"channel"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TikTok"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"shop_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ripple Shop"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"sale_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100001234"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2024-01-03T11:22:02"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"in_fulfillment"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Warehouse 1"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warehouse-1"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"fulfillment_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3AXJD4356DPP"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"waiting_for_picking"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"shipping_provider"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Kerry TH"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"shipping_provider_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kerry_th"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"tracking_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3000123888423988999"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2024-01-03T11:22:02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"is_bulky"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Inform Oakra about orders that are beginning the pick/pack process. For marketplace orders, Oakra will inform associated platforms that the order is &quot;ready to ship&quot;. Shipping labels will only be available after submitting orders to this endpoint.</p>
+
+<p>Only sales with status &quot;Pending&quot; can be submitted. After a successful response, sales will have status &quot;In Fulfillment&quot;.</p>
+<h3 id='endpoint-4'>Endpoint</h3>
+<p><code>POST https://app.oakra.com/api/v1/fulfilllment/shipping/init/</code></p>
+<h3 id='json-body-3'>JSON Body</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>sale_ids</td>
+<td>array</td>
+<td>Yes</td>
+<td>An array of sale ids. For marketplace orders these are marketplace order IDs.</td>
+</tr>
+</tbody></table>
+<h3 id='response-4'>Response</h3>
+<p>An array of fulfillments</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>fulfillments</td>
+<td>array</td>
+<td></td>
+</tr>
+<tr>
+<td>→ id</td>
+<td>int</td>
+<td>The ID of the fulfillment</td>
+</tr>
+<tr>
+<td>→ sale</td>
+<td>object</td>
+<td>The sale associated with the fulfillment</td>
+</tr>
+<tr>
+<td>→ location</td>
+<td>object</td>
+<td>The location from which the fulfillment originates</td>
+</tr>
+<tr>
+<td>→ fulfillment_id</td>
+<td>string</td>
+<td>An additional ID, such as for a channel package ID</td>
+</tr>
+<tr>
+<td>→ status</td>
+<td>string</td>
+<td>The status of the fulfillment</td>
+</tr>
+<tr>
+<td>→ shipping_provider</td>
+<td>object</td>
+<td>The shipping provider for the fulfillment</td>
+</tr>
+<tr>
+<td>→ tracking_number</td>
+<td>string</td>
+<td>The tracking number from the shipping provider</td>
+</tr>
+<tr>
+<td>→ date_created</td>
+<td>string</td>
+<td>The date and time the fulfillment was created</td>
+</tr>
+<tr>
+<td>→ is_bulky</td>
+<td>boolean</td>
+<td>If the fulfillment contains large items</td>
 </tr>
 </tbody></table>
 
