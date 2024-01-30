@@ -209,7 +209,7 @@ stock_records | array |
 > Request
 
 ```shell
-curl -X POST "https://app.oakra.com/api/v1/sales/shipping/init/" \
+curl -X POST "https://app.oakra.com/api/v1/fulfillment/shipping/init/" \
   -H 'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'
   -H 'X-OAKRA-API-VERSION: v1'
   -d '{
@@ -264,7 +264,7 @@ Only sales with status "Pending" can be submitted. After a successful response, 
 
 ### Endpoint
 
-`POST https://app.oakra.com/api/v1/fulfilllment/shipping/init/`
+`POST https://app.oakra.com/api/v1/fulfillment/shipping/init/`
 
 
 ### JSON Body
