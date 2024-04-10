@@ -333,6 +333,14 @@
                   </li>
               </ul>
           </li>
+          <li>
+            <a href="#sales" class="toc-h1 toc-link" data-title="Sales">Sales</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#cancel-sale" class="toc-h2 toc-link" data-title="Cancel sale">Cancel sale</a>
+                  </li>
+              </ul>
+          </li>
       </ul>
         <ul class="toc-footer">
             <li><a href='https://app.oakra.com/login/'>Sign in to Oakra</a></li>
@@ -758,6 +766,78 @@
 <td>→ is_bulky</td>
 <td>boolean</td>
 <td>If the fulfillment contains large items</td>
+</tr>
+</tbody></table>
+<h1 id='sales'>Sales</h1><h2 id='cancel-sale'>Cancel sale</h2>
+<blockquote>
+<p>Request</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="nt">-X</span> POST <span class="s2">"https://app.oakra.com/api/v1/sales/cancel/"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s1">'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'</span>
+  <span class="nt">-H</span> <span class="s1">'X-OAKRA-API-VERSION: v1'</span>
+  <span class="nt">-d</span> <span class="s1">'{
+        "sale_id": "100001235",
+        "cancel_reason": "out_of_stock"
+      }'</span>
+</code></pre></div>
+<blockquote>
+<p>Response</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">30421</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"sale_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100001235"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"canceled"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>If the sale is from a third party platform Oakra will cancel the order with the platform. The order is guaranteed to be cancelled in Oakra and the platform if this endpoint returns a success response.</p>
+<h3 id='endpoint-5'>Endpoint</h3>
+<p><code>POST https://app.oakra.com/api/v1/sales/cancel/</code></p>
+<h3 id='json-body-4'>JSON Body</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>sale_id</td>
+<td>string</td>
+<td>Yes</td>
+<td>The sale id of the sale</td>
+</tr>
+<tr>
+<td>cancel_reason</td>
+<td>string</td>
+<td>Yes</td>
+<td>The reason the sale was cancelled. Possible values are <code>out_of_stock</code>, <code>customer_request</code>, and <code>other</code>.</td>
+</tr>
+</tbody></table>
+<h3 id='response-5'>Response</h3>
+<p>A summary of the sale</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>→ id</td>
+<td>number</td>
+<td>The id of the sale</td>
+</tr>
+<tr>
+<td>→ sale_id</td>
+<td>string</td>
+<td>The ID used to reference this sale. Typically is the channel ID.</td>
+</tr>
+<tr>
+<td>→ status</td>
+<td>string</td>
+<td>The new sale status which will be canceled if the API call was successful</td>
 </tr>
 </tbody></table>
 
