@@ -292,3 +292,57 @@ fulfillments | array |
 → is_bulky | boolean | If the fulfillment contains large items
 
 
+# Sales
+
+## Cancel sale
+
+> Request
+
+```shell
+curl -X POST "https://app.oakra.com/api/v1/sales/cancel/" \
+  -H 'Authorization: Bearer bd0bbbaa0cf25202981e7542b02ce1af3545b7102e96d6020b1e91c67fee159f'
+  -H 'X-OAKRA-API-VERSION: v1'
+  -d '{
+        "sale_id": "100001235",
+        "cancel_reason": "out_of_stock"
+      }'
+```
+
+> Response
+
+```json
+{
+    "id": 30421,
+    "sale_id": "100001235",
+    "status": "canceled"
+}
+```
+
+
+If the sale is from a third party platform Oakra will cancel the order with the platform. The order is guaranteed to be cancelled in Oakra and the platform if this endpoint returns a success response.
+
+
+### Endpoint
+
+`POST https://app.oakra.com/api/v1/sales/cancel/`
+
+
+### JSON Body
+
+Parameter | Type | Required | Description
+--------- | ---- | -------- | -----------
+sale_id | string | Yes | The sale id of the sale
+cancel_reason | string | Yes | The reason the sale was cancelled. Possible values are `out_of_stock`, `customer_request`, and `other`.
+
+
+### Response
+
+A summary of the sale
+
+Parameter | Type | Description
+--------- | ---- | -----------
+→ id | number | The id of the sale
+→ sale_id | string | The ID used to reference this sale. Typically is the channel ID.
+→ status | string | The new sale status which will be canceled if the API call was successful
+
+
